@@ -28,4 +28,11 @@ class Controller:
         self._view.update()
 
     # Altre Funzioni Event Handler
-    # TODO
+    def mostra_strumenti(self, e):
+        self._view.lista_strumenti.controls.clear()
+
+        strumenti = self._model.get_strumenti()
+
+        if strumenti is not None:
+            for s in strumenti:
+                self._view.lista_strumenti.controls.append(ft.Text(f"{s}"))
