@@ -69,4 +69,29 @@ class DepositoStrumenti:
             :param tipo: il tipo dello strumento (es. "Chitarra")
             :return: una lista con tutti gli strumenti del tipo indicato oppure None
         """
-        # TODO
+        lista_strumenti = []
+
+        conn = get_connection()
+        cursor = conn.cursor()
+        query = f"SELECT * FROM strumento WHERE tipo = '{tipo}';"
+        cursor.execute(query)
+        righe = cursor.fetchall()
+        conn.close()
+
+        if len(righe) > 0:
+            for riga in righe:
+                codice = riga[0]
+                tipo = riga[1]
+                marca = riga[2]
+                anno_acquisto = riga[3]
+                valore = riga[4]
+                disponibile = int(riga[5])
+                if disponibile == 1:
+                    disponibile = False
+                else:
+                    disponibile = True
+                lista_strumenti.append(Strumento(codice, tipo, marca, anno_acquisto, valore, disponibile))
+        else:
+            lista_strumenti = None
+
+        return lista_strumenti
