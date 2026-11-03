@@ -42,6 +42,7 @@ class DepositoStrumenti:
         query = "SELECT * FROM strumento;"
         cursor.execute(query)
         righe = cursor.fetchall()
+        cursor.close()
         conn.close()
 
         if len(righe) > 0:
@@ -53,9 +54,9 @@ class DepositoStrumenti:
                 valore = riga[4]
                 disponibile = int(riga[5])
                 if disponibile == 1:
-                    disponibile = False
-                else:
                     disponibile = True
+                else:
+                    disponibile = False
                 lista_strumenti.append(Strumento(codice, tipo, marca, anno_acquisto, valore, disponibile))
         else:
             lista_strumenti = None
@@ -73,9 +74,10 @@ class DepositoStrumenti:
 
         conn = get_connection()
         cursor = conn.cursor()
-        query = f"SELECT * FROM strumento WHERE tipo = '{tipo}';"
-        cursor.execute(query)
+        query = f"SELECT * FROM strumento WHERE tipo = %s;"
+        cursor.execute(query, (tipo,))
         righe = cursor.fetchall()
+        cursor.close()
         conn.close()
 
         if len(righe) > 0:
@@ -87,9 +89,9 @@ class DepositoStrumenti:
                 valore = riga[4]
                 disponibile = int(riga[5])
                 if disponibile == 1:
-                    disponibile = False
-                else:
                     disponibile = True
+                else:
+                    disponibile = False
                 lista_strumenti.append(Strumento(codice, tipo, marca, anno_acquisto, valore, disponibile))
         else:
             lista_strumenti = None
